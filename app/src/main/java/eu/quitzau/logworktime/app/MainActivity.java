@@ -28,7 +28,7 @@ import java.io.OutputStream;
 import java.util.Locale;
 
 public class MainActivity extends Activity implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener {
+        GoogleApiClient.OnConnectionFailedListener, LogTimeFragment.OnFragmentInteractionListener {
 
     private static final String TAG = "eu-quitzau-logworktime";
     private static final int REQUEST_CODE_RESOLUTION = 3;
@@ -118,13 +118,13 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
                         .setInitialMetadata(metadataChangeSet)
                         .setInitialContents(contentsResult.getContents())
                         .build(mGoogleApiClient);
-                    startIntentSenderForResult(intentSender, REQUEST_CODE_CREATOR, null, 0, 0, 0);
+                    // startIntentSenderForResult(intentSender, REQUEST_CODE_CREATOR, null, 0, 0, 0);
                 }catch(IOException ioe){
                     Log.e(TAG, "Problem", ioe);
 
-                } catch (IntentSender.SendIntentException e) {
+                } /*catch (IntentSender.SendIntentException e) {
                     Log.e(TAG, "Sendproblem", e);
-                }
+                }*/
             }
         }
         );
@@ -153,6 +153,11 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
         }
     }
 
+    @Override
+    public void onFragmentInteraction() {
+
+    }
+
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
@@ -167,7 +172,11 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+            if (position == 0) {
+                return LogTimeFragment.newInstance();
+            } else {
+                return PlaceholderFragment.newInstance(position + 1);
+            }
         }
 
         @Override
